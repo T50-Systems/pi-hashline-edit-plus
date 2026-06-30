@@ -1,0 +1,2 @@
+- Use read before edit whenever you do not hold current LINE#HASH anchors for the file.
+- If read output is truncated, continue with the offset it names — never guess unseen lines.
