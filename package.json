@@ -1,6 +1,6 @@
 {
   "name": "pi-hashline-edit-plus",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cross-platform hashline read/edit override for Pi that avoids fragile oldText exact matches",
   "repository": {
     "type": "git",
@@ -24,7 +24,8 @@
     "prompts",
     "README.md",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "docs"
   ],
   "pi": {
     "extensions": [
@@ -47,7 +48,9 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "knip": "knip --production",
-    "check": "npm run typecheck && npm run knip && npm test"
+    "check": "npm run typecheck && npm run knip && npm test",
+    "release:pack": "npm pack",
+    "upstream:check": "npm view pi-hashline-edit version repository --json"
   },
   "devDependencies": {
     "@earendil-works/pi-coding-agent": "^0.80.2",

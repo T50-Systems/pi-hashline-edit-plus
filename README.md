@@ -7,7 +7,7 @@ It is especially useful on:
 - repos with mixed `CRLF`/`LF`
 - models that are flaky with Pi's exact-text `edit`
 
-This package is based on the hashline editing approach pioneered by [oh-my-pi](https://github.com/can1357/oh-my-pi) and the excellent [RimuruW/pi-hashline-edit](https://github.com/RimuruW/pi-hashline-edit) package. This repo focuses on a release-ready, cross-platform variant for global Pi use.
+This package keeps [RimuruW/pi-hashline-edit](https://github.com/RimuruW/pi-hashline-edit) as its upstream core, currently tracking upstream `0.7.0`, and adds a `plus` layer focused on release-ready, cross-platform operation for global Pi use. The hashline editing approach was pioneered by [oh-my-pi](https://github.com/can1357/oh-my-pi).
 
 ## What it changes
 
@@ -50,13 +50,16 @@ Pi's built-in `edit` is strict by design: `oldText` must match exactly, includin
 
 Hashline anchors reduce that fragility by targeting explicit line references from the latest `read`.
 
-## Cross-platform improvements in this fork
+## What `plus` adds
 
 - Windows-friendly test suite
-- CI ready for Linux + Windows
+- CI matrix for Linux, Windows, and macOS
+- Node.js 20 and 22 validation
 - CRLF note in `read` output, with preserved line endings on write
 - global Pi install instructions
-- release packaging metadata
+- release packaging metadata and tag-based GitHub release automation
+
+Core hashline semantics should stay aligned with upstream unless a safety or Pi-compatibility reason is documented. See [`docs/upstream.md`](docs/upstream.md) for the upstream sync policy.
 
 ## Install
 
@@ -88,6 +91,16 @@ You should see `git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.0` in your
 - Batch all edits for one file into a single `edit` call.
 - If `read` says the file uses `CRLF`, edits still preserve `CRLF` on write.
 - Prefer anchor-based edits over `replace_text`.
+
+## Compatibility and stability
+
+`0.1.x` supports Pi packages at or above:
+
+- `@earendil-works/pi-ai >= 0.74.0`
+- `@earendil-works/pi-coding-agent >= 0.74.0`
+
+The supported CI matrix is Ubuntu, Windows, and macOS on Node.js 20 and 22.
+See [`docs/release-and-stability.md`](docs/release-and-stability.md) for release automation and the criteria for moving from `0.1.x` to a stable release. See [`docs/upstream.md`](docs/upstream.md) for how this fork tracks upstream core changes.
 
 ## Development
 
