@@ -9,7 +9,7 @@ Every change that affects runtime behavior must pass CI on:
 - Ubuntu latest
 - Windows latest
 - macOS latest
-- Node.js 20 and 22
+- Node.js 22
 
 Windows remains a first-class target because this package exists largely to make Pi edits reliable on Windows and mixed `CRLF`/`LF` repositories.
 
@@ -29,7 +29,7 @@ Releases are published by the `release` GitHub Actions workflow.
 1. Update `package.json` version and `CHANGELOG.md`.
 2. Ensure `npm run check` passes locally.
 3. Merge to `main` after CI passes.
-4. Create and push a tag matching the package version, for example `v0.1.1`.
+4. Create and push a tag matching the package version, for example `v0.1.2`.
 5. The workflow verifies the tag matches `package.json`, runs the full check suite, builds `npm pack`, and creates a GitHub Release with the package artifact.
 
 ## Criteria for leaving `0.1.x`

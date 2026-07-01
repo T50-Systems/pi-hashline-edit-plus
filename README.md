@@ -54,7 +54,7 @@ Hashline anchors reduce that fragility by targeting explicit line references fro
 
 - Windows-friendly test suite
 - CI matrix for Linux, Windows, and macOS
-- Node.js 20 and 22 validation
+- Node.js 22 validation
 - CRLF note in `read` output, with preserved line endings on write
 - global Pi install instructions
 - release packaging metadata and tag-based GitHub release automation
@@ -66,7 +66,7 @@ Core hashline semantics should stay aligned with upstream unless a safety or Pi-
 ### Global Pi install from GitHub
 
 ```bash
-pi install git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.0
+pi install git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.2
 ```
 
 ### Local checkout
@@ -83,7 +83,7 @@ pi install .
 pi list
 ```
 
-You should see `git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.0` in your global packages.
+You should see `git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.2` in your global packages.
 
 ## Usage notes
 
@@ -99,7 +99,7 @@ You should see `git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.0` in your
 - `@earendil-works/pi-ai >= 0.74.0`
 - `@earendil-works/pi-coding-agent >= 0.74.0`
 
-The supported CI matrix is Ubuntu, Windows, and macOS on Node.js 20 and 22.
+The supported CI matrix is Ubuntu, Windows, and macOS on Node.js 22.
 See [`docs/release-and-stability.md`](docs/release-and-stability.md) for release automation and the criteria for moving from `0.1.x` to a stable release. See [`docs/upstream.md`](docs/upstream.md) for how this fork tracks upstream core changes.
 
 ## Development
