@@ -4,7 +4,7 @@
   "description": "Cross-platform hashline read/edit override for Pi that avoids fragile oldText exact matches",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cervantesh/pi-hashline-edit-plus.git"
+    "url": "git+https://github.com/T50-Systems/pi-hashline-edit-plus.git"
   },
   "author": "cervantesh",
   "keywords": [
@@ -58,9 +58,9 @@
     "typescript": "^6.0.3",
     "vitest": "^3.0.0"
   },
-  "homepage": "https://github.com/cervantesh/pi-hashline-edit-plus",
+  "homepage": "https://github.com/T50-Systems/pi-hashline-edit-plus",
   "bugs": {
-    "url": "https://github.com/cervantesh/pi-hashline-edit-plus/issues"
+    "url": "https://github.com/T50-Systems/pi-hashline-edit-plus/issues"
   },
   "engines": {
     "node": ">=20"

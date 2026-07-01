@@ -63,13 +63,13 @@ Hashline anchors reduce that fragility by targeting explicit line references fro
 ### Global Pi install from GitHub
 
 ```bash
-pi install git:github.com/cervantesh/pi-hashline-edit-plus@v0.1.0
+pi install git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.0
 ```
 
 ### Local checkout
 
 ```bash
-git clone https://github.com/cervantesh/pi-hashline-edit-plus
+git clone https://github.com/T50-Systems/pi-hashline-edit-plus
 cd pi-hashline-edit-plus
 pi install .
 ```
@@ -80,7 +80,7 @@ pi install .
 pi list
 ```
 
-You should see `git:github.com/cervantesh/pi-hashline-edit-plus@v0.1.0` in your global packages.
+You should see `git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.0` in your global packages.
 
 ## Usage notes
 
