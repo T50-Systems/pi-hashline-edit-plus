@@ -1,31 +1,6 @@
 import * as Diff from "diff";
-import { computeLineHash } from "./hashline";
-
-// ─── Line ending normalization ──────────────────────────────────────────
-
-export function detectLineEnding(content: string): "\r\n" | "\n" {
-	const crlfIdx = content.indexOf("\r\n");
-	const lfIdx = content.indexOf("\n");
-	if (lfIdx === -1 || crlfIdx === -1) return "\n";
-	return crlfIdx < lfIdx ? "\r\n" : "\n";
-}
-
-export function normalizeToLF(text: string): string {
-	return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-}
-
-export function restoreLineEndings(
-	text: string,
-	ending: "\r\n" | "\n",
-): string {
-	return ending === "\r\n" ? text.replace(/\n/g, "\r\n") : text;
-}
-
-export function stripBom(content: string): { bom: string; text: string } {
-	return content.startsWith("\uFEFF")
-		? { bom: "\uFEFF", text: content.slice(1) }
-		: { bom: "", text: content };
-}
+export { detectLineEnding, normalizeToLF, restoreLineEndings, stripBom } from "pi-anchor-edit-core";
+import { computeLineHash } from "pi-anchor-edit-core";
 
 // ─── Diff generation ────────────────────────────────────────────────────
 
