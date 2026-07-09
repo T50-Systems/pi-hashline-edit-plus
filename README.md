@@ -1,17 +1,25 @@
 # pi-hashline-edit-plus
 
-Cross-platform Pi extension that overrides the built-in `read` and `edit` tools with a hash-anchored workflow designed to avoid fragile `oldText must match exactly` failures.
+Cross-platform Pi extension that overrides `read` and `edit` with a hash-anchored workflow designed to avoid fragile exact-text edit failures.
 
-It is especially useful on:
-- Windows projects
-- repos with mixed `CRLF`/`LF`
-- models that are flaky with Pi's exact-text `edit`
+`pi-hashline-edit-plus` tracks the upstream [`RimuruW/pi-hashline-edit`](https://github.com/RimuruW/pi-hashline-edit) core (currently aligned with upstream `0.7.0`) and adds a T50 plus layer for release-ready, global Pi use on Windows, Linux, and macOS. The hashline editing approach was pioneered by [`oh-my-pi`](https://github.com/can1357/oh-my-pi).
 
-This package keeps [RimuruW/pi-hashline-edit](https://github.com/RimuruW/pi-hashline-edit) as its upstream core, currently tracking upstream `0.7.0`, and adds a `plus` layer focused on release-ready, cross-platform operation for global Pi use. The hashline editing approach was pioneered by [oh-my-pi](https://github.com/can1357/oh-my-pi).
+## Why this helps
 
-## What it changes
+Pi's native edit behavior is intentionally strict: `oldText` must match exactly, including whitespace and line endings. That often fails when:
+
+- a model copies text imperfectly;
+- a file changed after the last read;
+- a repository mixes `CRLF` and `LF`;
+- multiple edits target ambiguous text;
+- stale anchors need clear recovery guidance.
+
+Hashline anchors target explicit line references from the latest read output instead of relying only on raw text matching.
+
+## Tool behavior
 
 ### `read`
+
 Returns text files as `LINE#HASH:content`:
 
 ```text
@@ -21,7 +29,8 @@ Returns text files as `LINE#HASH:content`:
 ```
 
 ### `edit`
-Edits by anchor instead of raw exact-match text:
+
+Edits by anchor:
 
 ```json
 {
@@ -32,41 +41,46 @@ Edits by anchor instead of raw exact-match text:
 }
 ```
 
-Supported ops:
+Supported operations:
+
 - `replace`
 - `append`
 - `prepend`
 - `replace_text`
 
-The package still accepts native Pi-style compatibility payloads and normalizes them before validation when possible.
+The package also accepts native Pi-style compatibility payloads and normalizes them before validation when possible.
 
-## Why this helps
+## What the plus layer adds
 
-Pi's built-in `edit` is strict by design: `oldText` must match exactly, including whitespace and newlines. That breaks often when:
-- the model copies text imperfectly
-- the file changed after `read`
-- the repo uses `CRLF`
-- the model sends ambiguous multi-edit payloads
+- Windows-friendly test coverage.
+- CI matrix for Linux, Windows, and macOS.
+- Node.js 22 validation.
+- CRLF notes in `read` output and line-ending preservation on write.
+- Global Pi install guidance.
+- Release packaging metadata and tag-based GitHub release automation.
+- Shared anchor/edit primitives from [`pi-anchor-edit-core`](https://github.com/T50-Systems/pi-anchor-edit-core).
+- Documented upstream sync policy in [`docs/upstream.md`](docs/upstream.md).
 
-Hashline anchors reduce that fragility by targeting explicit line references from the latest `read`.
+## Repository layout
 
-## What `plus` adds
-
-- Windows-friendly test suite
-- CI matrix for Linux, Windows, and macOS
-- Node.js 22 validation
-- CRLF note in `read` output, with preserved line endings on write
-- global Pi install instructions
-- release packaging metadata and tag-based GitHub release automation
-
-Core hashline semantics should stay aligned with upstream unless a safety or Pi-compatibility reason is documented. See [`docs/upstream.md`](docs/upstream.md) for the upstream sync policy.
+```text
+index.ts             Pi extension entrypoint
+src/read.ts          read override implementation
+src/edit.ts          edit override implementation
+src/hashline.ts      hashline parsing/resolution
+src/edit-*.ts        normalization, rendering, diff, response helpers
+src/fs-write.ts      safe write behavior and permissions handling
+prompts/             read/edit prompt snippets and guidelines
+test/                core, tool, integration, prompt, and permission tests
+docs/                release/stability notes and ADRs
+```
 
 ## Install
 
 ### Global Pi install from GitHub
 
 ```bash
-pi install git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.2
+pi install git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.3
 ```
 
 ### Local checkout
@@ -77,20 +91,19 @@ cd pi-hashline-edit-plus
 pi install .
 ```
 
-## Verify
+Verify with:
 
 ```bash
 pi list
 ```
 
-You should see `git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.2` in your global packages.
-
-## Usage notes
+## Usage notes for agents
 
 - Use `read` before `edit` unless you already have fresh anchors.
-- Batch all edits for one file into a single `edit` call.
-- If `read` says the file uses `CRLF`, edits still preserve `CRLF` on write.
-- Prefer anchor-based edits over `replace_text`.
+- Batch every change to one file into a single `edit` call.
+- If `read` reports `CRLF`, edits still preserve `CRLF` on write.
+- Prefer anchor-based edits over `replace_text` when anchors are available.
+- On `[E_STALE_ANCHOR]`, retry with the replacement anchors returned in the error.
 
 ## Compatibility and stability
 
@@ -99,13 +112,15 @@ You should see `git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.2` in your
 - `@earendil-works/pi-ai >= 0.74.0`
 - `@earendil-works/pi-coding-agent >= 0.74.0`
 
-The supported CI matrix is Ubuntu, Windows, and macOS on Node.js 22.
-See [`docs/release-and-stability.md`](docs/release-and-stability.md) for release automation and the criteria for moving from `0.1.x` to a stable release. See [`docs/upstream.md`](docs/upstream.md) for how this fork tracks upstream core changes.
+The supported CI matrix is Ubuntu, Windows, and macOS on Node.js 22. See [`docs/release-and-stability.md`](docs/release-and-stability.md) for release automation and stability criteria.
 
 ## Development
 
 ```bash
 npm install
+npm run typecheck
+npm run knip
+npm test
 npm run check
 ```
 
