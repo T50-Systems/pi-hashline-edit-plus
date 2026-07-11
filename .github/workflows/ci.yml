@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -20,5 +23,11 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: npm
-      - run: npm ci
-      - run: npm run check
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Typecheck, analyze, and test
+        run: npm run check
+      - name: Verify package contents
+        run: npm run package:check
+      - name: Verify dependency signatures
+        run: npm run security:signatures
