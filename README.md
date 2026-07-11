@@ -61,6 +61,14 @@ The package also accepts native Pi-style compatibility payloads and normalizes t
 - Shared anchor/edit primitives from [`pi-anchor-edit-core`](https://github.com/T50-Systems/pi-anchor-edit-core).
 - Documented upstream sync policy in [`docs/upstream.md`](docs/upstream.md).
 
+## Project documentation
+
+- [`docs/product-and-roadmap.md`](docs/product-and-roadmap.md): vision, measurable outcomes, issue grouping, and prioritization.
+- [`docs/architecture.md`](docs/architecture.md): runtime flow, ownership boundaries, extension points, and test map.
+- [`docs/operations.md`](docs/operations.md): supported configuration, host-only metrics, diagnostics, and recovery runbook.
+- [`docs/examples.md`](docs/examples.md): anchored edits, compatibility input, CRLF, recovery, and host integration recipes.
+- [`docs/release-and-stability.md`](docs/release-and-stability.md): support matrix, release verification, upgrades, and rollback.
+
 ## Repository layout
 
 ```text
@@ -71,8 +79,10 @@ src/hashline.ts      hashline parsing/resolution
 src/edit-*.ts        normalization, rendering, diff, response helpers
 src/fs-write.ts      safe write behavior and permissions handling
 prompts/             read/edit prompt snippets and guidelines
-test/                core, tool, integration, prompt, and permission tests
-docs/                release/stability notes and ADRs
+test/                core, tool, integration, prompt, maintenance, and permission tests
+benchmark/           deterministic performance scenarios
+scripts/             repository and release verification
+docs/                product, architecture, operations, examples, release policy, and ADRs
 ```
 
 ## Quickstart
@@ -131,6 +141,8 @@ pi install .
 - **`[E_STALE_ANCHOR]`:** retry with the current anchors included in the error, or run `read` again.
 - **`[E_INVALID_PATCH]`:** confirm every edit has a supported `op`, uses anchors copied verbatim, and does not include `LINE#HASH:` inside `lines`.
 - **Permission errors:** verify the target is writable. Atomic replacement may require write access to both the file and its parent directory.
+
+See the full error-to-action table in [`docs/operations.md`](docs/operations.md) and realistic workflows in [`docs/examples.md`](docs/examples.md).
 
 ## Usage notes
 

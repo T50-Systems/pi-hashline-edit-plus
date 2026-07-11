@@ -22,15 +22,17 @@ npm run package:check
 npm run security:signatures
 ```
 
-`npm ci` uses the committed lockfile. `npm run check` runs TypeScript checking, production dead-code analysis, and the complete Vitest suite. `npm run package:check` previews the files that would ship without publishing anything. `npm run security:signatures` verifies registry signatures and attestations where available.
+`npm ci` uses the committed lockfile. `npm run check` runs TypeScript checking, production dead-code analysis, release-metadata verification, and the complete Vitest suite. `npm run package:check` previews the files that would ship without publishing anything. `npm run security:signatures` verifies registry signatures and attestations where available.
 
 To run a narrower feedback loop:
 
 ```bash
 npm run typecheck
 npm run knip
+npm run release:check
 npm test
 npm run test:watch
+npm run benchmark
 ```
 
 ## Repository map
@@ -43,6 +45,9 @@ npm run test:watch
 - `test/core/`, `test/tools/`, and `test/integration/` cover the anchor engine, public tools, and multi-step behavior.
 - `docs/adr/` records intentional behavior choices.
 - `CONTEXT.md` lists architecture invariants that changes must preserve.
+- `docs/architecture.md` documents runtime boundaries and extension points.
+- `docs/operations.md` documents configuration, metrics, and recovery.
+- `test/maintenance/` verifies repository and release invariants; `benchmark/` contains non-gating performance scenarios.
 
 Read `CONTEXT.md` and `docs/upstream.md` before changing core anchor, read, or edit semantics. Plus-owned changes should remain focused on Pi compatibility, packaging, cross-platform behavior, and safety.
 
@@ -58,7 +63,7 @@ Read `CONTEXT.md` and `docs/upstream.md` before changing core anchor, read, or e
 
 1. Keep the change scoped to one behavior or documentation outcome.
 2. Add or update tests for runtime behavior.
-3. Run `npm run check`, `npm run package:check`, and `npm run security:signatures`.
+3. Run `npm run check`, `npm run package:check`, and `npm run security:signatures`; run `npm run benchmark` when performance-sensitive paths change.
 4. Confirm no credentials, local paths, generated archives, or fixture residue are staged.
 5. Explain what changed, why, and how reviewers can reproduce the validation.
 

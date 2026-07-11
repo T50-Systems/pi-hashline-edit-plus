@@ -24,13 +24,22 @@ Do not raise the minimum Pi version in a patch release unless the change fixes a
 
 ## Release automation
 
-Releases are published by the `release` GitHub Actions workflow.
+Releases are published by the `release` GitHub Actions workflow. Release metadata is checked locally and in CI so package, lockfile, changelog, and tag drift fails before publication.
 
-1. Update `package.json` version and `CHANGELOG.md`.
-2. Ensure `npm run check` passes locally.
-3. Merge to `main` after CI passes.
-4. Create and push a tag matching the package version, for example `v0.1.2`.
-5. The workflow verifies the tag matches `package.json`, runs the full check suite, builds `npm pack`, and creates a GitHub Release with the package artifact.
+1. Add user-visible changes under `## [Unreleased]` in `CHANGELOG.md`.
+2. Choose the version, update `package.json` and `package-lock.json`, then promote the notes to a dated `## X.Y.Z - YYYY-MM-DD` section. Keep an empty `## [Unreleased]` section for future work.
+3. Run `npm run check`, `npm run package:check`, and (when registry access is available) `npm run security:signatures`. `npm run check` includes `npm run release:check`.
+4. Merge to `main` after the full OS matrix passes.
+5. Create and push a tag matching the package version, for example `v0.1.3`.
+6. The release workflow reruns `npm run release:check -- "$TAG"`, the full check suite, and packaging before creating a GitHub Release artifact.
+
+To verify a proposed tag without publishing:
+
+```bash
+npm run release:check -- v0.1.3
+```
+
+Safe upgrades should use an immutable version tag. Review the release's changelog section, confirm the documented minimum Pi version, install the new tag, restart Pi, and exercise one read/edit/recovery loop before broad rollout. Keep the prior tag available for rollback.
 
 ## Criteria for leaving `0.1.x`
 
