@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- Added product/KPI, architecture, operations, recovery, observability, examples, and roadmap documentation.
+- Added a reproducible 10,000-line hashline benchmark and automated release-metadata verification.
+
+## 0.1.3 - 2026-07-02
+
+### Changed
+- Adopted `pi-anchor-edit-core` for shared anchor and edit primitives.
+
 ## 0.1.2 - 2026-07-01
 
 ### Fixed

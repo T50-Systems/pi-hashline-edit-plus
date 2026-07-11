@@ -27,15 +27,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      - name: Verify package version matches tag
+      - name: Verify release metadata and tag
         shell: bash
         run: |
           TAG="${{ github.event.inputs.tag || github.ref_name }}"
-          VERSION="v$(node -p "require('./package.json').version")"
-          if [ "$TAG" != "$VERSION" ]; then
-            echo "Tag $TAG does not match package.json version $VERSION" >&2
-            exit 1
-          fi
+          npm run release:check -- "$TAG"
       - name: Create package artifact
         run: npm pack
       - name: Publish GitHub release
