@@ -5,6 +5,13 @@
 ### Added
 - Added product/KPI, architecture, operations, recovery, observability, examples, and roadmap documentation.
 - Added a reproducible 10,000-line hashline benchmark and automated release-metadata verification.
+- Added cross-platform coverage budgets with machine-readable summaries and a threshold-regression fixture.
+- Added read-only verification and maintainer documentation for protected-branch and GitHub security controls.
+- Added release-specific changelog extraction and failure-recovery verification for tag workflows.
+
+### Changed
+- Pinned `pi-anchor-edit-core` to reviewed commit `fa10abb76aee5e745ad291aff4448b09fd1cb47d` through HTTPS package metadata.
+- Assigned stable Linux, Windows, and macOS CI check names for protected-branch requirements.
 
 ## 0.1.3 - 2026-07-02
 
