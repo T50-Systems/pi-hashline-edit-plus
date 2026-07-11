@@ -23,6 +23,8 @@
     "src",
     "prompts",
     "README.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
     "LICENSE",
     "CHANGELOG.md",
     "docs"
@@ -48,6 +50,8 @@
     "typecheck": "tsc --noEmit",
     "knip": "knip --production",
     "check": "npm run typecheck && npm run knip && npm test",
+    "package:check": "npm pack --dry-run",
+    "security:signatures": "npm audit signatures",
     "release:pack": "npm pack",
     "upstream:check": "npm view pi-hashline-edit version repository --json"
   },

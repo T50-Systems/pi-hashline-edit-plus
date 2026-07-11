@@ -3,3 +3,12 @@ node_modules/
 coverage/
 dist/
 .vitest/
+
+*.log
+.env
+.env.*
+!.env.example
+.npmrc
+*.key
+*.pem
+*.p12
