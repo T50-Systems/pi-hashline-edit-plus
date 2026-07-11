@@ -75,29 +75,64 @@ test/                core, tool, integration, prompt, and permission tests
 docs/                release/stability notes and ADRs
 ```
 
-## Install
+## Quickstart
 
-### Global Pi install from GitHub
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) 22 (the version used in CI)
+- npm (included with Node.js)
+- Pi with `@earendil-works/pi-coding-agent >= 0.74.0`
+
+### Install globally from GitHub
 
 ```bash
 pi install git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.3
 ```
 
-### Local checkout
-
-```bash
-git clone https://github.com/T50-Systems/pi-hashline-edit-plus
-cd pi-hashline-edit-plus
-pi install .
-```
-
-Verify with:
+Verify that Pi registered the package:
 
 ```bash
 pi list
 ```
 
-## Usage notes for agents
+The output should include `git:github.com/T50-Systems/pi-hashline-edit-plus@v0.1.3`. Start a new Pi session after installing so the tool overrides are loaded.
+
+### Try the anchor workflow
+
+1. Ask Pi to `read` a text file. Each returned line has a `LINE#HASH:` prefix.
+2. Copy a fresh `LINE#HASH` token into an `edit` request.
+3. Use the fresh anchors returned by the successful edit for any follow-up edit.
+
+```json
+{
+  "path": "src/main.ts",
+  "edits": [
+    { "op": "replace", "pos": "11#KT", "lines": ["  console.log('hashline');"] }
+  ]
+}
+```
+
+Anchors are snapshots of line content. If the file changes after `read`, read it again rather than guessing an updated anchor.
+
+### Install from a local checkout
+
+```bash
+git clone https://github.com/T50-Systems/pi-hashline-edit-plus.git
+cd pi-hashline-edit-plus
+npm ci
+npm run check
+pi install .
+```
+
+### Troubleshooting
+
+- **Package is absent from `pi list`:** rerun the install command and check its error output; for a local checkout, run it from the repository root.
+- **Built-in `read` or `edit` still appears:** restart Pi after installation and check for another package that overrides the same tools.
+- **`[E_STALE_ANCHOR]`:** retry with the current anchors included in the error, or run `read` again.
+- **`[E_INVALID_PATCH]`:** confirm every edit has a supported `op`, uses anchors copied verbatim, and does not include `LINE#HASH:` inside `lines`.
+- **Permission errors:** verify the target is writable. Atomic replacement may require write access to both the file and its parent directory.
+
+## Usage notes
 
 - Use `read` before `edit` unless you already have fresh anchors.
 - Batch every change to one file into a single `edit` call.
@@ -114,15 +149,9 @@ pi list
 
 The supported CI matrix is Ubuntu, Windows, and macOS on Node.js 22. See [`docs/release-and-stability.md`](docs/release-and-stability.md) for release automation and stability criteria.
 
-## Development
+## Contributing
 
-```bash
-npm install
-npm run typecheck
-npm run knip
-npm test
-npm run check
-```
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the clone-to-verified-change workflow, repository map, test conventions, and pull request checklist. Security reports and dependency-trust guidance are in [`SECURITY.md`](SECURITY.md).
 
 ## License
 
