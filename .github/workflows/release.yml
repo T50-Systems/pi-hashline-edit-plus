@@ -32,6 +32,11 @@ jobs:
         run: |
           TAG="${{ github.event.inputs.tag || github.ref_name }}"
           npm run release:check -- "$TAG"
+      - name: Extract release-specific notes
+        shell: bash
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          npm run release:notes -- "$TAG" release-notes.md
       - name: Create package artifact
         run: npm pack
       - name: Publish GitHub release
@@ -43,5 +48,5 @@ jobs:
           gh release create "$TAG" ./*.tgz \
             --repo "$GITHUB_REPOSITORY" \
             --title "$TAG" \
-            --notes-file CHANGELOG.md \
+            --notes-file release-notes.md \
             --verify-tag

@@ -18,11 +18,12 @@ git clone https://github.com/T50-Systems/pi-hashline-edit-plus.git
 cd pi-hashline-edit-plus
 npm ci
 npm run check
+npm run coverage
 npm run package:check
 npm run security:signatures
 ```
 
-`npm ci` uses the committed lockfile. `npm run check` runs TypeScript checking, production dead-code analysis, release-metadata verification, and the complete Vitest suite. `npm run package:check` previews the files that would ship without publishing anything. `npm run security:signatures` verifies registry signatures and attestations where available.
+`npm ci` uses the committed lockfile. `npm run check` runs TypeScript checking, production dead-code analysis, release-metadata verification, and the complete Vitest suite with coverage budgets. `npm run coverage` writes the machine-readable `coverage/coverage-summary.json`. `npm run package:check` previews the files that would ship without publishing anything. `npm run security:signatures` verifies registry signatures and attestations where available.
 
 To run a narrower feedback loop:
 
@@ -33,6 +34,7 @@ npm run release:check
 npm test
 npm run test:watch
 npm run benchmark
+npm run coverage
 ```
 
 ## Repository map
@@ -58,6 +60,9 @@ Read `CONTEXT.md` and `docs/upstream.md` before changing core anchor, read, or e
 - Reuse helpers from `test/support/fixtures.ts`.
 - Keep tests portable across Ubuntu, Windows, and macOS. Do not assume POSIX paths, permissions, or line endings.
 - Cover both `LF` and `CRLF` when a change touches file content or writes.
+- Coverage includes `index.ts` and every production module under `src/`, including `src/edit.ts`, `src/read.ts`, and `src/fs-write.ts`.
+- The Windows baseline recorded on 2026-07-11 was 80.46% statements/lines, 83.75% branches, and 87.71% functions. Enforced floors are rounded down to 80%, 83%, and 87% respectively.
+- A pull request may raise coverage thresholds freely. Lowering any threshold requires a recorded fresh baseline, an explanation of the uncovered safety path, and reviewer evidence that the reduction does not hide a regression.
 
 ## Before submitting a pull request
 
@@ -66,5 +71,9 @@ Read `CONTEXT.md` and `docs/upstream.md` before changing core anchor, read, or e
 3. Run `npm run check`, `npm run package:check`, and `npm run security:signatures`; run `npm run benchmark` when performance-sensitive paths change.
 4. Confirm no credentials, local paths, generated archives, or fixture residue are staged.
 5. Explain what changed, why, and how reviewers can reproduce the validation.
+
+## Protected branch expectations
+
+Pull requests to `main` must pass the stable checks `ci-linux-node22`, `ci-windows-node22`, and `ci-macos-node22` with the branch current before merge. The zero-review policy does not bypass these checks. Force pushes and branch deletion remain disabled. Maintainers verify the live configuration through the GitHub API with `GH_TOKEN="$(gh auth token)" npm run repository:check`; see `docs/repository-controls.md`.
 
 For vulnerabilities or sensitive findings, follow `SECURITY.md` rather than opening a public issue.

@@ -2,9 +2,15 @@
 
 ## Reporting a vulnerability
 
-Do not open a public issue for an unpatched vulnerability or include secrets, private file contents, or exploit payloads in logs. Use GitHub private vulnerability reporting from the repository's **Security** tab when available; otherwise contact a T50-Systems organization owner privately. Include affected versions, impact, minimal reproduction steps, and any suggested mitigation.
+Do not open a public issue for an unpatched vulnerability or include secrets, private file contents, or exploit payloads in logs. Submit the report through **Report a vulnerability** on the repository's **Security** tab. Include affected versions, impact, minimal reproduction steps, and any suggested mitigation. A T50-Systems repository administrator acknowledges reports within two business days and keeps sensitive discussion in the private advisory.
 
 General bugs without sensitive details can use the public issue tracker.
+
+## GitHub security controls
+
+Private vulnerability reporting, secret scanning, push protection, and Dependabot security updates are required repository controls. Maintainers review private reports and new alerts at least weekly, classify reachability and severity, assign remediation, and record a private rationale before dismissing a false positive. Exposed credentials are revoked immediately; sensitive evidence never moves to a public issue.
+
+.github/dependabot.yml also schedules weekly npm dependency-update pull requests. `docs/repository-controls.md` documents ownership, API verification, escalation, and recovery. Run `GH_TOKEN="$(gh auth token)" npm run repository:check` for a read-only live-settings check.
 
 ## Extension trust boundary
 
@@ -39,7 +45,7 @@ npm ls --all
 
 An audit finding is not automatically reachable from this extension. Triage whether the dependency is runtime or development-only, whether the vulnerable API is used, and whether the fix is compatible before updating. Document accepted risk rather than silently suppressing a finding.
 
-Git dependencies deserve extra review because registry attestations do not cover them. The shared `pi-anchor-edit-core` dependency is locked to a resolved commit in `package-lock.json`; review changes to that resolved commit like source changes.
+Git-sourced dependencies deserve extra review because registry attestations do not cover them. The shared `pi-anchor-edit-core` dependency is pinned to the reviewed `fa10abb76aee5e745ad291aff4448b09fd1cb47d` commit through an HTTPS archive with lockfile integrity. `npm run release:check` rejects mutable runtime GitHub dependency specifications and verifies that full-commit pins match the lockfile resolution.
 
 ## Version scope
 

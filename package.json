@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "diff": "^8.0.2",
-    "pi-anchor-edit-core": "git+https://github.com/T50-Systems/pi-anchor-edit-core.git"
+    "pi-anchor-edit-core": "https://github.com/T50-Systems/pi-anchor-edit-core/archive/fa10abb76aee5e745ad291aff4448b09fd1cb47d.tar.gz"
   },
   "peerDependencies": {
     "@earendil-works/pi-ai": ">=0.74.0",
@@ -47,10 +47,13 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "knip": "knip --production",
     "release:check": "node scripts/verify-release.mjs",
-    "check": "npm run typecheck && npm run knip && npm run release:check && npm test",
+    "release:notes": "node scripts/extract-release-notes.mjs",
+    "repository:check": "node scripts/verify-repository-settings.mjs",
+    "check": "npm run typecheck && npm run knip && npm run release:check && npm run coverage",
     "benchmark": "vitest bench --run benchmark/hashline.bench.ts",
     "package:check": "npm pack --dry-run",
     "security:signatures": "npm audit signatures",
@@ -60,6 +63,7 @@
   "devDependencies": {
     "@earendil-works/pi-coding-agent": "^0.80.2",
     "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^3.2.7",
     "ajv": "^8.20.0",
     "knip": "^6.16.1",
     "typescript": "^6.0.3",

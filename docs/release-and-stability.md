@@ -31,13 +31,34 @@ Releases are published by the `release` GitHub Actions workflow. Release metadat
 3. Run `npm run check`, `npm run package:check`, and (when registry access is available) `npm run security:signatures`. `npm run check` includes `npm run release:check`.
 4. Merge to `main` after the full OS matrix passes.
 5. Create and push a tag matching the package version, for example `v0.1.3`.
-6. The release workflow reruns `npm run release:check -- "$TAG"`, the full check suite, and packaging before creating a GitHub Release artifact.
+6. The release workflow reruns `npm run release:check -- "$TAG"`, the full check suite, and packaging, extracts only the tag's dated changelog section, then creates a GitHub Release with the npm package artifact.
 
 To verify a proposed tag without publishing:
 
 ```bash
 npm run release:check -- v0.1.3
 ```
+
+To preview the exact release notes without publishing:
+
+```bash
+npm run release:notes -- v0.1.3 release-notes.md
+```
+
+The command fails when the requested tag has no matching dated changelog section. Inspect `release-notes.md` and the `npm pack --dry-run` output before creating a tag.
+
+### v0.1.3 failure diagnosis
+
+The `v0.1.3` tag workflow (run `28565354269`) failed during `npm ci` before checks or packaging. Its lockfile resolved `pi-anchor-edit-core` as `ssh://git@github.com/...`; the hosted runner had no SSH key and GitHub returned `Permission denied (publickey)`. The runtime dependency now uses an immutable full-commit HTTPS archive, so clean release runners do not require SSH credentials.
+
+### Failure recovery and verification
+
+1. Do not move, overwrite, or recreate an existing tag. Diagnose the failed run and fix source metadata on `main`.
+2. Run `npm ci`, `npm run check`, `npm run package:check`, `npm audit`, and `npm run security:signatures` on the release commit.
+3. Run `npm run release:check -- "v$(node -p 'require("./package.json").version')"` and extract/inspect the release-specific notes.
+4. Prepare the next patch version and dated changelog section, merge it through all three required CI checks, and create a new tag for that version.
+5. Verify the tag workflow completes, the GitHub Release notes contain only that version's section, and exactly one `.tgz` package artifact is attached. Download the artifact and inspect it with `npm pack --dry-run` or `tar -tf`.
+6. If publication fails after a GitHub Release is created, preserve the tag and artifact evidence. Correct automation on `main` and use an explicit maintainer-reviewed recovery; never rewrite the tag to hide the failure.
 
 Safe upgrades should use an immutable version tag. Review the release's changelog section, confirm the documented minimum Pi version, install the new tag, restart Pi, and exercise one read/edit/recovery loop before broad rollout. Keep the prior tag available for rollback.
 
