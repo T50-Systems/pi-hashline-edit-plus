@@ -12,6 +12,8 @@ The `ci` workflow publishes these stable required-check names:
 
 `main` must require all three checks with strict/up-to-date branches. The existing zero-approval pull-request policy remains valid: a pull request may merge without an approval only after every required check succeeds. Force pushes and branch deletion remain disabled.
 
+The matrix also publishes `ci-linux-node24` as an additive Ubuntu compatibility check. It is not a replacement for any stable required Node.js 22 check, and adding it must not rename the three protected-branch contexts above. The declared package minimum remains Node.js 22 (`engines.node >=22`).
+
 Verify the live settings through the GitHub API:
 
 ```bash
@@ -77,9 +79,9 @@ Dependabot may propose GitHub Actions updates, but its pull request is a notific
 
 Do not merge an update when the tag target, generated distribution, provenance, or permission impact cannot be explained. Never replace a reviewed SHA with a mutable branch, major tag, or floating tag.
 
-### Issue #26 scope boundary
+### Issue scope boundaries
 
-Issue #26 changes only plus-owned CI/release supply-chain controls and their validation evidence. It does not change the Node support policy tracked in issue #27, synchronize RimuruW 0.8.3 semantics, or update `pi-anchor-edit-core`. No base, core, or upstream update is required for issue #26.
+Issue #26 changed only plus-owned CI/release supply-chain controls and their validation evidence; it did not change Node support, synchronize RimuruW 0.8.3 semantics, or update `pi-anchor-edit-core`. Issue #27 raises only the declared Node minimum, adds Ubuntu Node.js 24 compatibility coverage, and enforces metadata consistency. No base, core, runtime-semantic, or upstream update is required for either issue.
 
 ## Triage ownership and cadence
 
