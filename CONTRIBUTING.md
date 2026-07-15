@@ -5,7 +5,7 @@ Thanks for helping make hash-anchored edits safer across platforms.
 ## Prerequisites
 
 - Git
-- Node.js 22 (the CI version)
+- Node.js 22 or newer (22 is the minimum and primary cross-platform CI version; Ubuntu also validates Node.js 24)
 - npm
 - `@earendil-works/pi-coding-agent >= 0.74.0` when manually testing the extension
 
@@ -23,7 +23,7 @@ npm run package:check
 npm run security:signatures
 ```
 
-`npm ci` uses the committed lockfile. `npm run check` runs TypeScript checking, production dead-code analysis, release-metadata verification, and the complete Vitest suite with coverage budgets. `npm run coverage` writes the machine-readable `coverage/coverage-summary.json`. `npm run package:check` previews the files that would ship without publishing anything. `npm run security:signatures` verifies registry signatures and attestations where available.
+`npm ci` uses the committed lockfile. `npm run check` runs offline workflow validation, Node support metadata drift checks, TypeScript checking, production dead-code analysis, release-metadata verification, and the complete Vitest suite with coverage budgets. `npm run coverage` writes the machine-readable `coverage/coverage-summary.json`. `npm run package:check` previews the files that would ship without publishing anything. `npm run security:signatures` verifies registry signatures and attestations where available.
 
 To run a narrower feedback loop:
 

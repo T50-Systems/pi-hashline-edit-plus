@@ -54,7 +54,8 @@
     "release:notes": "node scripts/extract-release-notes.mjs",
     "repository:check": "node scripts/verify-repository-settings.mjs",
     "workflow:check": "node scripts/verify-workflows.mjs",
-    "check": "npm run workflow:check && npm run typecheck && npm run knip && npm run release:check && npm run coverage",
+    "node-support:check": "node scripts/verify-node-support.mjs",
+    "check": "npm run workflow:check && npm run node-support:check && npm run typecheck && npm run knip && npm run release:check && npm run coverage",
     "benchmark": "vitest bench --run benchmark/hashline.bench.ts",
     "package:check": "npm pack --dry-run",
     "security:signatures": "npm audit signatures",
@@ -76,6 +77,6 @@
     "url": "https://github.com/T50-Systems/pi-hashline-edit-plus/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }

@@ -54,7 +54,7 @@ The package also accepts native Pi-style compatibility payloads and normalizes t
 
 - Windows-friendly test coverage.
 - CI matrix for Linux, Windows, and macOS.
-- Node.js 22 validation.
+- Node.js 22 minimum validation, with additional Ubuntu compatibility coverage on Node.js 24.
 - CRLF notes in `read` output and line-ending preservation on write.
 - Global Pi install guidance.
 - Release packaging metadata and tag-based GitHub release automation.
@@ -89,7 +89,7 @@ docs/                product, architecture, operations, examples, release policy
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 22 (the version used in CI)
+- [Node.js](https://nodejs.org/) 22 or newer
 - npm (included with Node.js)
 - Pi with `@earendil-works/pi-coding-agent >= 0.74.0`
 
@@ -159,7 +159,7 @@ See the full error-to-action table in [`docs/operations.md`](docs/operations.md)
 - `@earendil-works/pi-ai >= 0.74.0`
 - `@earendil-works/pi-coding-agent >= 0.74.0`
 
-The supported CI matrix is Ubuntu, Windows, and macOS on Node.js 22. See [`docs/release-and-stability.md`](docs/release-and-stability.md) for release automation and stability criteria.
+The minimum supported Node.js version is 22 (`engines.node >=22`). The CI matrix validates Ubuntu on Node.js 22 and 24, and Windows and macOS on Node.js 22. See [`docs/release-and-stability.md`](docs/release-and-stability.md) for release automation and stability criteria.
 
 ## Contributing
 

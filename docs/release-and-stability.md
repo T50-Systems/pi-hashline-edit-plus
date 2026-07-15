@@ -4,12 +4,13 @@ This package is still in the `0.1.x` line. Treat it as usable but not yet API-st
 
 ## Supported test matrix
 
-Every change that affects runtime behavior must pass CI on:
+The minimum supported Node.js version is 22 (`engines.node >=22`). Every change that affects runtime behavior must pass the required baseline CI checks on:
 
-- Ubuntu latest
-- Windows latest
-- macOS latest
-- Node.js 22
+- Ubuntu latest on Node.js 22
+- Windows latest on Node.js 22
+- macOS latest on Node.js 22
+
+Ubuntu latest on Node.js 24 provides additive compatibility coverage for the next even-numbered release line. It does not rename or replace the stable Node.js 22 required checks.
 
 Windows remains a first-class target because this package exists largely to make Pi edits reliable on Windows and mixed `CRLF`/`LF` repositories.
 

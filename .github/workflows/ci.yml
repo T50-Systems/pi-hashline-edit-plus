@@ -19,6 +19,9 @@ jobs:
           - id: linux-node22
             os: ubuntu-latest
             node: 22
+          - id: linux-node24
+            os: ubuntu-latest
+            node: 24
           - id: windows-node22
             os: windows-latest
             node: 22
