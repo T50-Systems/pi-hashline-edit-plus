@@ -10,7 +10,7 @@ General bugs without sensitive details can use the public issue tracker.
 
 Private vulnerability reporting, secret scanning, push protection, and Dependabot security updates are required repository controls. Maintainers review private reports and new alerts at least weekly, classify reachability and severity, assign remediation, and record a private rationale before dismissing a false positive. Exposed credentials are revoked immediately; sensitive evidence never moves to a public issue.
 
-.github/dependabot.yml also schedules weekly npm dependency-update pull requests. `docs/repository-controls.md` documents ownership, API verification, escalation, and recovery. Run `GH_TOKEN="$(gh auth token)" npm run repository:check` for a read-only live-settings check.
+`.github/dependabot.yml` also schedules weekly npm and GitHub Actions dependency-update pull requests. `docs/repository-controls.md` documents ownership, action-pin review evidence, advancement, API verification, escalation, and recovery. Run `npm run workflow:check` for offline workflow semantics, expression, and pin-policy validation; run `GH_TOKEN="$(gh auth token)" npm run repository:check` for a read-only live-settings check.
 
 ## Extension trust boundary
 

@@ -1,0 +1,7 @@
+name: malformed-workflow
+on: push
+jobs:
+  test:
+    runs_on: ubuntu-latest
+    steps:
+      - run: echo invalid
