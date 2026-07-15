@@ -35,7 +35,7 @@
     ]
   },
   "dependencies": {
-    "diff": "^8.0.2",
+    "diff": "^9.0.0",
     "pi-anchor-edit-core": "https://github.com/T50-Systems/pi-anchor-edit-core/archive/fa10abb76aee5e745ad291aff4448b09fd1cb47d.tar.gz"
   },
   "peerDependencies": {
