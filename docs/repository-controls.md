@@ -32,7 +32,7 @@ The repository security configuration must expose private vulnerability reportin
 - secret scanning push protection;
 - Dependabot security updates.
 
-`.github/dependabot.yml` additionally schedules weekly npm version-update pull requests every Monday at 09:00 UTC. This schedule complements, rather than replaces, security updates.
+`.github/dependabot.yml` additionally schedules weekly npm and GitHub Actions version-update pull requests every Monday at 09:00 UTC. These schedules complement, rather than replace, security updates.
 
 Read-only verification endpoints:
 
@@ -41,6 +41,45 @@ gh api repos/T50-Systems/pi-hashline-edit-plus/private-vulnerability-reporting
 gh api repos/T50-Systems/pi-hashline-edit-plus --jq '.security_and_analysis'
 gh api repos/T50-Systems/pi-hashline-edit-plus/dependabot/alerts --paginate
 ```
+
+## GitHub Actions pin policy
+
+Every non-local `uses:` reference in `.github/workflows/` must use a reviewed lowercase 40-character commit SHA and end with the corresponding release comment, for example:
+
+```yaml
+- uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+```
+
+`npm run workflow:check` enforces this policy and runs the locked, WebAssembly build of `actionlint` locally. The validation is offline after `npm ci`: it does not resolve tags or download action metadata while checking workflow structure, semantics, expression types, or pins. Negative fixtures under `test/fixtures/workflows/` prove malformed workflow keys, invalid expressions, and mutable action references fail closed.
+
+### Reviewed pins
+
+Review recorded 2026-07-15:
+
+| Action | Release | Reviewed SHA | Evidence |
+| --- | --- | --- | --- |
+| `actions/checkout` | [`v4.2.2`](https://github.com/actions/checkout/releases/tag/v4.2.2) | `11bd71901bbe5b1630ceea73d27597364c9af683` | Official tag resolves directly to this commit; GitHub reports a valid commit signature; the `v4.2.1...v4.2.2` source and bundled-distribution diff was reviewed. |
+| `actions/setup-node` | [`v4.4.0`](https://github.com/actions/setup-node/releases/tag/v4.4.0) | `49933ea5288caeca8642d1e84afbd3f7d6820020` | Official tag resolves directly to this commit; GitHub reports a valid commit signature; the `v4.3.0...v4.4.0` source, metadata, dependency, and bundled-distribution diff was reviewed. |
+| `actions/upload-artifact` | [`v4.6.2`](https://github.com/actions/upload-artifact/releases/tag/v4.6.2) | `ea165f8d65b6e75b540449e92b4886f43607fa02` | Official tag resolves directly to this commit; GitHub reports a valid commit signature; the `v4.6.1...v4.6.2` dependency and bundled-distribution diff was reviewed. |
+
+The review also confirmed that the existing workflow permissions remain unchanged (`contents: read` in CI and `contents: write` only in the release job) and that no action update changes the stable required-check names.
+
+### Advancing a pin
+
+Dependabot may propose GitHub Actions updates, but its pull request is a notification, not review evidence. Before changing a SHA, a maintainer must:
+
+1. confirm the release is published by the action's official repository and read its release notes and security advisories;
+2. resolve the release tag with `gh api repos/OWNER/REPO/git/ref/tags/VERSION`, dereferencing an annotated tag when necessary, and verify the resulting value is the exact lowercase 40-character commit SHA proposed;
+3. inspect `gh api repos/OWNER/REPO/commits/SHA` for signature verification and compare the prior reviewed release to the proposed release, including `action.yml`, source, dependencies, and checked-in `dist/` changes;
+4. review requested inputs, runtime changes, network behavior, and the calling workflow's least-privilege `permissions`;
+5. update the SHA and trailing release comment together, then update the reviewed-pins table with the date and evidence;
+6. run `npm ci`, `npm run workflow:check`, `npm run typecheck`, `npm run check`, `npm run package:check`, `npm run security:signatures`, `npm audit --audit-level=high`, and `npm test` before relying on required CI checks.
+
+Do not merge an update when the tag target, generated distribution, provenance, or permission impact cannot be explained. Never replace a reviewed SHA with a mutable branch, major tag, or floating tag.
+
+### Issue #26 scope boundary
+
+Issue #26 changes only plus-owned CI/release supply-chain controls and their validation evidence. It does not change the Node support policy tracked in issue #27, synchronize RimuruW 0.8.3 semantics, or update `pi-anchor-edit-core`. No base, core, or upstream update is required for issue #26.
 
 ## Triage ownership and cadence
 

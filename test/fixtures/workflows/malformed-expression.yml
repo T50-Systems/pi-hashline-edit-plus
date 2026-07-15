@@ -1,0 +1,8 @@
+name: malformed-expression
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use an unavailable matrix value
+        run: echo '${{ matrix.missing }}'
